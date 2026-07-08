@@ -1,0 +1,28 @@
+{
+  "env": {
+    "GRILL_LOG": "on"
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/stop-commit-reminder.sh"
+          }
+        ]
+      }
+    ],
+    "UserPromptExpansion": [
+      {
+        "matcher": "grill-(me|with-docs)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/grill-log.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
