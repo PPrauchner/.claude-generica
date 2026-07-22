@@ -1,3 +1,7 @@
 # Artefatos locais/por-projeto — nunca versionar no template reutilizável.
-.claude/settings.local.json
-.claude/current-issue
+# Os artefatos de dentro de .claude/ são ignorados por .claude/.gitignore, que
+# viaja junto ao copiar a pasta para outro projeto.
+
+# Política de release deste repositório-template: é meta do template, não parte
+# dele — não deve ser copiada para os projetos que reusam a pasta .claude/.
+CLAUDE.local.md

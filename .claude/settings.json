@@ -1,6 +1,7 @@
 {
   "env": {
-    "GRILL_LOG": "on"
+    "GRILL_LOG": "on",
+    "BOARD_SYNC": "on"
   },
   "hooks": {
     "Stop": [
