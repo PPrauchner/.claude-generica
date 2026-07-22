@@ -43,6 +43,14 @@ Atualizações feitas aqui não se propagam sozinhas para quem já copiou.
 4. Mantenha `python-conventions.md` se o projeto for Python; senão, crie o
    módulo de linguagem equivalente e remova o que não se aplica.
 
+## Como usar num projeto que já existe
+
+Rode a skill **`adopt-repo`**. Ela faz recon do repositório, deriva o `CLAUDE.md` do
+que o código já responde (stack, comandos, estrutura) e usa uma sessão de
+`grill-with-docs` para o que o código não sabe dizer — o glossário de domínio do
+`CONTEXT.md` e as restrições do projeto. Nunca sobrescreve o que já existe: completa
+apenas o que falta e leva contradições para o grill.
+
 ### Skills disponíveis globalmente (opcional)
 
 Preferência pessoal, não uma etapa obrigatória do reuso: rodar
