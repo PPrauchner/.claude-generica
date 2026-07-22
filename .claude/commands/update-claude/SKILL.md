@@ -98,13 +98,23 @@ existe aqui e não existe na versão vigente*. Nada de "você removeu isto".
 
 ### 4. Aplicar
 
-**Compare normalizando fim-de-linha e espaço em fim de linha.** Os projetos estão
-em CRLF e o template em LF: sem normalizar, os ~70 arquivos aparecem 100%
-alterados e nenhuma mudança real fica visível.
+**Compare normalizando fim-de-linha e espaço em fim de linha.** Template e projeto
+quase nunca coincidem: o `core.autocrlf` da máquina decide o que sai no checkout,
+então o mesmo clone vem CRLF aqui e LF ali. Sem normalizar, os ~70 arquivos
+aparecem 100% alterados e nenhuma mudança real fica visível.
 
-**Grave preservando o fim-de-linha do destino** — o do arquivo que está sendo
-substituído, ou o dominante no `.claude/` do projeto quando o arquivo é novo.
-Gravar LF cru marcaria o repo inteiro como modificado e afogaria o diff.
+**Não assuma a direção — meça.** Compare o tamanho em bytes com a contagem de
+linhas: se `bytes - linhas` bate com o total de linhas, o arquivo é CRLF.
+`grep -c $'\r'` e `awk '/\r$/'` mentem em ambientes Windows (um casa toda linha
+com padrão vazio, o outro descarta o CR na leitura) e já produziram a conclusão
+oposta à realidade.
+
+**Grave no fim-de-linha do destino** — o do arquivo que está sendo substituído, ou
+o dominante no `.claude/` do projeto quando o arquivo é novo. Copiar cru marcaria
+o repo inteiro como modificado e afogaria o diff. Pior: **um `.sh` com CRLF não
+executa sob bash**, então `board-move.sh` e os hooks quebram em silêncio se
+chegarem com o fim-de-linha errado. O `git add` normaliza o que vai para o
+histórico, mas quem roda o script é o disco.
 
 Então aplique a tabela de propriedade. Para o `settings.json`, junte
 recursivamente: chave ausente entra; chave existente fica como está. Em listas de

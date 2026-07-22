@@ -12,8 +12,17 @@ a versão vigente daqui.
   nenhum — a versão de cada projeto só existia na cabeça do usuário.
 - **Quase toda a "divergência" é CRLF.** `karpathy-principles.md` e
   `skills/tdd/SKILL.md` acusam diff de 100% das linhas no SAGA e no Novelas, mas
-  são byte-a-byte idênticos ignorando fim-de-linha (projetos em CRLF, template em
-  LF). Comparar sem normalizar reportaria conflito em todos os arquivos, sempre.
+  são byte-a-byte idênticos ignorando fim-de-linha. Comparar sem normalizar
+  reportaria conflito em todos os arquivos, sempre.
+
+  > **Correção pós-sessão (execução real contra o novelas-ia).** Durante o grill eu
+  > afirmei "projetos em CRLF, template em LF" — é **o inverso**: o template (e seus
+  > clones nesta máquina) vem em CRLF, os projetos estão em LF. `karpathy-principles.md`
+  > tem 2392 bytes aqui e 2336 no Novelas, com 56 linhas nos dois — os 56 bytes de
+  > diferença são os CR daqui. `grep -c $'\r'` e `awk '/\r$/'` deram respostas opostas
+  > e ambas erradas neste ambiente; só a aritmética de bytes resolveu. O desenho não
+  > muda (normalizar na comparação, gravar na convenção do destino), mas a
+  > justificativa publicada estava de cabeça para baixo.
 - Normalizando, a divergência real é **`rules/code-conventions.md`,
   `settings.json` e `skills/README.md`** — só. O SAGA tem *zero* skills
   customizadas: as 15 batem byte-a-byte. Os `commands/*` divergentes do Novelas
