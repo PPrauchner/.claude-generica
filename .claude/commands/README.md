@@ -6,7 +6,7 @@ Commands de workflow
 - **[commit](./commit/SKILL.md)** — Analisa mudanças não-commitadas e realiza commits atômicos seguindo as convenções do projeto.
 - **[start-issue](./start-issue/SKILL.md)** — Inicia o trabalho em uma issue do GitHub: lê a issue, avalia complexidade e prepara a implementação. Move a issue para *In progress* no board.
 - **[open-pr](./open-pr/SKILL.md)** — Abre o PR da branch atual, descobrindo nos rodapés dos commits quais issues foram implementadas, e move essas issues para *In review*.
-- **[review-pr](./review-pr/SKILL.md)** — Revisa um PR quanto à conformidade com a issue/DoD e a documentação, delegando a análise de qualidade de código ao `/code-review`, e executa a ação escolhida no GitHub.
+- **[review-pr](./review-pr/SKILL.md)** — Revisa um PR quanto à conformidade com a issue/DoD e a documentação, delegando a análise de qualidade de código ao `/code-review`, e executa a ação escolhida no GitHub. Com 2+ issues, avalia cada uma em um subagente paralelo.
 
 ## Pipeline
 
@@ -16,3 +16,11 @@ orquestrando o trecho `start-issue → commit` para uma fila inteira de issues.
 A sincronização com o GitHub Projects (*In progress* ao iniciar, *In review* ao abrir
 o PR) é feita por [`scripts/board-move.sh`](../scripts/board-move.sh) e se desliga com
 `BOARD_SYNC=off` no bloco `env` de `.claude/settings.json`.
+
+## Toggles (`env` de `.claude/settings.json`)
+
+| Chave | Efeito quando `off` |
+|-------|---------------------|
+| `BOARD_SYNC` | Issues não são movidas no board por `/start-issue` e `/open-pr`. |
+| `PR_REVIEW_PARALLEL` | `/review-pr` avalia a conformidade de todas as issues inline, sem subagentes. |
+| `GRILL_LOG` | Sessões de grill não são registradas em `docs/grills_logs/`. |

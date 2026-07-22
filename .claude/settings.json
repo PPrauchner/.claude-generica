@@ -1,7 +1,8 @@
 {
   "env": {
     "GRILL_LOG": "on",
-    "BOARD_SYNC": "on"
+    "BOARD_SYNC": "on",
+    "PR_REVIEW_PARALLEL": "on"
   },
   "hooks": {
     "Stop": [

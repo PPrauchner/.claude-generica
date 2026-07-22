@@ -50,12 +50,34 @@ gh pr checkout $ARGUMENTS
 Invoque o **`/code-review`** (nível `high` por padrão; **sem** `--comment` — quem
 publica é este comando) sobre o diff da branch do PR e colete os achados.
 
-Ao terminar, restaure a branch original:
-```bash
-git checkout -   # ou a branch guardada no passo 1
-```
+O `/code-review` roda **uma vez, sobre o PR inteiro** — nunca por issue. Recortar o
+diff por issue é inviável (issues compartilham arquivos) e N execuções produziriam os
+mesmos achados repetidos. A divisão é: *qualidade = PR inteiro, conformidade = por
+issue*.
+
+**Não restaure a branch ainda** — o passo 5 precisa da branch do PR em checkout.
 
 ### 5. Conformidade — o que deveria vs. o que foi feito
+
+Com **2 ou mais issues** vinculadas e `PR_REVIEW_PARALLEL` diferente de `off`
+(`.claude/settings.json`), avalie **uma issue por subagente, em paralelo**: um PR de 4
+issues vira 4 revisões independentes em vez de uma análise que dilui as quatro DoDs.
+
+1. Para cada issue, preencha o template de
+   [ISSUE-REVIEW-BRIEF.md](./ISSUE-REVIEW-BRIEF.md) com o corpo da issue **verbatim**
+   — o subagente não vê esta conversa.
+2. Spawne todos com `Agent` (`subagent_type: general-purpose`) **numa única
+   mensagem**, para que rodem concorrentemente.
+3. Eles compartilham esta working tree em modo leitura. Por isso o brief proíbe
+   escrever, commitar e trocar de branch: um subagente que mexesse na árvore
+   corromperia a revisão dos outros.
+4. Use apenas o relatório final de cada um — o formato de resposta já é o que entra no
+   veredito, sem reescrita.
+
+**Com 1 issue, nenhuma issue, ou `PR_REVIEW_PARALLEL=off`:** avalie inline, você
+mesmo. Spawnar um subagente para uma issue só custa contexto e tempo sem paralelizar
+nada.
+
 ```bash
 gh pr diff $ARGUMENTS
 ```
@@ -66,31 +88,52 @@ Compare o baseline (passo 3) com o diff. Procure:
 
 Leia com `Read` os arquivos alterados que precisarem de contexto.
 
-### 6. Fundir em um veredito único
-Classifique **todos** os achados (conformidade + os do `/code-review`) em três baldes:
+Quando **todos** os subagentes tiverem terminado, restaure a branch original:
+```bash
+git checkout -   # ou a branch guardada no passo 1
+```
 
-- **BLOQUEADOR** — DoD não cumprida OU bug crítico do `/code-review`. Impede aprovação.
+### 6. Fundir em um veredito único
+Severidade dos achados, venham eles da conformidade ou do `/code-review`:
+
+- **BLOQUEADOR** — DoD não cumprida OU bug crítico. Impede aprovação.
 - **DESVIO** — divergência de requisito, terminologia (`CONTEXT.md`) ou decisão (`docs/adr/`).
 - **MENOR** — nit, convenção, sugestão de simplificação.
+
+A conformidade é apresentada **por issue**, não fundida numa lista só: um PR pode
+cumprir a issue #41 inteira e falhar na #42, e quem revisa precisa saber que a #41
+pode fechar. A qualidade de código fica numa seção própria, porque é do PR inteiro e
+não pertence a nenhuma issue.
 
 Estrutura do veredito (exibir **inline**, não salvar arquivo):
 
 ```markdown
-## Revisão — PR #<N> [vs. Issue #<M> | DoD inferida do PR]
+## Revisão — PR #<N> [vs. Issues #<A>, #<B> | DoD inferida do PR]
 
 **Veredito:** APROVAR / SOLICITAR MUDANÇAS / COMENTAR
 [1-2 frases: o que foi entregue e o julgamento geral.]
 
-### 🔴 BLOQUEADOR
-- [achado, com referência a arquivo/linha e à origem: DoD ou bug]
+### Issue #<A> — ✓ DoD cumprida
+[uma frase]
+- ⚪ MENOR: [nit]
 
-### 🟡 DESVIO
-- [divergência, com citação da issue / CONTEXT.md / ADR]
+### Issue #<B> — ✗ DoD incompleta
+[uma frase]
+- 🔴 BLOQUEADOR: [critério de aceite não cumprido, com arquivo/linha]
+- 🟡 DESVIO: [divergência, citando a issue / CONTEXT.md / ADR]
 
-### ⚪ MENOR
-- [nit / convenção]
+### Qualidade de código (PR inteiro)
+- 🔴 BLOQUEADOR: [bug, com arquivo/linha]
+- ⚪ MENOR: [simplificação]
 ```
-Omita seções vazias. Sem BLOQUEADOR, o PR é aprovável.
+
+As seções por issue são os relatórios dos subagentes, **coladas como vieram** — o
+formato do brief já é este. Não reescreva nem resuma: reescrever achado de revisão é
+como se perde a referência de arquivo/linha.
+
+Omita seções e severidades vazias. Sem nenhum BLOQUEADOR, o PR é aprovável. Sem issues
+vinculadas, use uma única seção "Conformidade (DoD inferida do PR)" no lugar das
+seções por issue.
 
 ### 7. Apresentar e perguntar a ação
 Exiba o veredito. Se o PR estiver `OPEN`, pergunte qual ação tomar:
