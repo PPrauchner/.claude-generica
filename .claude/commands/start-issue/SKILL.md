@@ -12,7 +12,12 @@ Inicia o trabalho na issue `#$ARGUMENTS`.
 ### 1. Registrar issue ativa
 ```bash
 echo "$ARGUMENTS" > .claude/current-issue
+bash .claude/scripts/board-move.sh $ARGUMENTS in-progress
 ```
+O `board-move.sh` move a issue para *In progress* no GitHub Projects. Ele é
+silencioso com `BOARD_SYNC=off` (`.claude/settings.json`) e **nunca falha** — se o
+board não estiver configurado, avisa e o trabalho segue. Não trate aviso de board
+como erro.
 
 ### 2. Ler a issue
 ```bash
@@ -38,3 +43,6 @@ seguir.
 
 ### 5. Iniciar implementação
 Comece pela primeira sub-tarefa (ou pela issue diretamente, se simples). Implemente via tdd (skill em `.claude/skills/tdd/SKILL.md`).
+
+Ao terminar, o pipeline segue em `/commit` e depois `/open-pr` — é o `/open-pr` que
+move a issue para *In review*, ao publicar o PR.

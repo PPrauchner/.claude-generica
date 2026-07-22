@@ -60,4 +60,5 @@ git log --oneline -1  # confirmar cada commit
 ```bash
 git log --oneline -N
 ```
-Perguntar se deseja fazer push.
+Perguntar se deseja **abrir o PR agora via `/open-pr`** (que faz o push, cria o PR e
+move as issues para *In review*). Se a resposta for não, parar aqui — sem push.

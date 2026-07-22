@@ -35,7 +35,9 @@ says to present something and wait, or literally says `Ask: "..."`:
   run — don't stop to ask, and don't spawn further subagents. Keep the breakdown
   strictly inside the brief's acceptance criteria and out-of-scope; if delivering it
   would require work the brief marks out of scope, report blocked rather than sprawl.
-- When `/commit`'s workflow asks whether to push: answer no. Never push.
+- When `/commit`'s workflow asks whether to open the PR via `/open-pr`: answer no.
+  Never push and never open a PR — the orchestrator offers that to the human once the
+  whole queue is done.
 
 ## Do
 

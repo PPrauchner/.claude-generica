@@ -60,8 +60,13 @@ For each issue, in order:
 
 After the queue drains, present one table: issue, status (done / blocked /
 partial), commit hash(es) or stash ref, one-line notes. Call out every
-blocked/partial issue by name so the user can triage them. Do not push, open PRs, or
-merge anything — that decision is the user's.
+blocked/partial issue by name so the user can triage them.
+
+Then — and only then — offer to run `/open-pr`, which pushes the branch, opens one PR
+for the whole batch (its `Closes #N` footers are already in the commits) and moves
+those issues to *In review*. **You** ask this, once, after the queue drains: the
+subagents run unattended and have no one to ask, which is why they never push.
+If the user declines, stop; the commits stay local.
 
 ## Parallel mode
 
@@ -76,7 +81,12 @@ reviews and merges each independently.
 
 ## Out of scope
 
-- No auto-push, no auto-PR, no auto-merge — always a human decision.
+- No auto-push, no auto-PR, no auto-merge — always a human decision. Subagents never
+  do any of it; the orchestrator only *offers* `/open-pr` at the end (step 4), and
+  only after the user says yes.
+- Doesn't create branches. All sequential-mode issues land on whatever branch is
+  checked out, which is what makes a batch become a single multi-issue PR. Create the
+  branch before invoking if you don't want the batch on your current one.
 - No cross-issue resumability state file — if the batch is interrupted, re-invoke
   with the remaining issue numbers explicitly; recovery of any partial work is manual
   (check `git log` and `git stash list`).
