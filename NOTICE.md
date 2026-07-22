@@ -34,6 +34,23 @@ As seguintes skills em `.claude/skills/` vieram desse repositório:
 O índice `.claude/skills/README.md` também deriva do original, com entradas
 adicionadas para o que foi escrito aqui.
 
+### `multica-ai/andrej-karpathy-skills`
+
+- **Origem:** https://github.com/multica-ai/andrej-karpathy-skills
+- **Licença:** o repositório declara MIT no README, mas não inclui arquivo
+  `LICENSE` nem nomeia um titular de copyright. Por isso não há aviso a
+  reproduzir em [`LICENSE`](./LICENSE) — esta seção é a atribuição.
+
+`.claude/rules/karpathy-principles.md` é uma tradução para português do
+`CLAUDE.md` daquele repositório: os quatro princípios (pense antes de codar,
+simplicidade primeiro, mudanças cirúrgicas, execução orientada a metas) vêm de
+lá, na mesma ordem e estrutura.
+
+O texto original é da multica-ai; os princípios que ele sistematiza são
+observações de **Andrej Karpathy** sobre erros comuns de LLMs em coding, como a
+própria descrição do repositório indica. Karpathy não é autor do texto nem
+está associado a nenhum dos repositórios.
+
 ---
 
 ## Material autoral deste repositório
@@ -43,13 +60,9 @@ Copyright (c) 2026 Pietro Mendes Prauchner — MIT.
 - `.claude/skills/adopt-repo/` — adoção de repositórios já em andamento.
 - `.claude/commands/` — `/commit`, `/start-issue`, `/review-pr`, `/open-pr`,
   `/afk-queue`.
-- `.claude/rules/` — `code-conventions.md`, `python-conventions.md`,
-  `karpathy-principles.md`.
+- `.claude/rules/` — `code-conventions.md` e `python-conventions.md`
+  (`karpathy-principles.md` não; ver acima).
 - `.claude/hooks/` — `stop-commit-reminder.sh`, hook de log de grill.
 - `.claude/scripts/` — `link-skills.sh`, `list-skills.sh`, `board-move.sh`.
 - `.claude/settings.json` e o template `settings.local.json.example`.
 - `docs/grills_logs/` e o `README.md` da raiz.
-
-> `karpathy-principles.md` sintetiza princípios de coding com IA associados a
-> Andrej Karpathy. O texto é redação própria; as ideias são creditadas a ele no
-> título do arquivo.

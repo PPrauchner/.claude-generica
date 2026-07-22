@@ -64,8 +64,10 @@ em `.claude/skills/`.
 
 Boa parte das skills em `.claude/skills/` vem de
 [**mattpocock/skills**](https://github.com/mattpocock/skills), de Matt Pocock,
-publicado sob MIT. Os comandos de workflow, as rules, os hooks, os scripts e a
-skill `adopt-repo` foram escritos aqui.
+publicado sob MIT. A rule `karpathy-principles.md` é uma tradução do `CLAUDE.md`
+de [**multica-ai/andrej-karpathy-skills**](https://github.com/multica-ai/andrej-karpathy-skills).
+Os comandos de workflow, as demais rules, os hooks, os scripts e a skill
+`adopt-repo` foram escritos aqui.
 
 A fronteira exata entre um e outro está em [`NOTICE.md`](./NOTICE.md).
 
