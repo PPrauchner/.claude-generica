@@ -73,5 +73,6 @@ Resumo de uma linha por release; as notas completas estão na aba *Releases*.
 | `v4.0.0` | Comando novo `/update-claude` + marcador `.claude/.template.json`. |
 | `v4.0.1` | `/update-claude`: commit (não objeto tag) no marcador; para em branch de tópico. |
 | `v4.0.2` | `/update-claude`: direção do fim-de-linha era o inverso; `.sh` com CRLF não roda. |
+| `v4.0.3` | Template renomeado para ARK; `/update-claude` aponta para o repositório novo. |
 
-**Próxima:** skill/comando novo → `v5.0.0`; alteração → `v4.0.3`.
+**Próxima:** skill/comando novo → `v5.0.0`; alteração → `v4.0.4`.

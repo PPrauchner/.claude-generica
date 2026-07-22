@@ -1,12 +1,12 @@
 ---
 name: update-claude
-description: Atualiza a pasta .claude/ deste repositório para a versão vigente do template .claude-generica, preservando o que o projeto customizou. Use when updating the .claude folder to the latest template version.
+description: Atualiza a pasta .claude/ deste repositório para a versão vigente do template ARK (Agent Rules Kit), preservando o que o projeto customizou. Use when updating the .claude folder to the latest template version.
 ---
 
 # Update Claude
 
 Traz o `.claude/` **deste** repositório para a versão vigente do template
-`PPrauchner/.claude-generica`, sem atropelar o que o projeto customizou.
+`PPrauchner/ARK-Agent-Rules-Kit`, sem atropelar o que o projeto customizou.
 
 Não recebe argumentos: a origem vem do marcador `.claude/.template.json` e, na
 falta dele, da URL fixada neste arquivo.
@@ -45,7 +45,7 @@ cat .claude/.template.json 2>/dev/null
 ls .claude/rules/karpathy-principles.md .claude/skills 2>/dev/null
 ```
 
-- **Estamos dentro do próprio `.claude-generica`** (o `origin` é a origem): **pare.**
+- **Estamos dentro do próprio ARK** (o `origin` é a origem): **pare.**
   Aqui a pasta se edita, não se atualiza.
 - **Não há `.claude/`, ou não há `rules/karpathy-principles.md` nem `skills/`:**
   não existe template instalado para atualizar — instalar 70 arquivos aqui é uma
@@ -56,7 +56,7 @@ ls .claude/rules/karpathy-principles.md .claude/skills 2>/dev/null
 ### 2. Descobrir a versão vigente
 
 ```bash
-git ls-remote --tags --refs https://github.com/PPrauchner/.claude-generica.git
+git ls-remote --tags --refs https://github.com/PPrauchner/ARK-Agent-Rules-Kit.git
 ```
 
 A tag mais alta em ordem de versão é a vigente. A numeração é **odômetro, não
@@ -69,7 +69,7 @@ sobre as skills globais ainda pode valer.
 Clone raso da tag numa pasta temporária e apague no fim:
 
 ```bash
-git clone --depth 1 --branch <tag> https://github.com/PPrauchner/.claude-generica.git <tmp>
+git clone --depth 1 --branch <tag> https://github.com/PPrauchner/ARK-Agent-Rules-Kit.git <tmp>
 git -C <tmp> rev-parse HEAD
 ```
 
@@ -140,7 +140,7 @@ sugestão é *manter*.
 
 ```json
 {
-  "repo": "PPrauchner/.claude-generica",
+  "repo": "PPrauchner/ARK-Agent-Rules-Kit",
   "tag": "v4.0.0",
   "commit": "<saída do rev-parse do passo 2 — o commit, não o objeto tag>",
   "updated_at": "<AAAA-MM-DD>"

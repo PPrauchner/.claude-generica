@@ -1,4 +1,4 @@
-# .claude-generica
+# ARK — Agent Rules Kit
 
 Repositório-template da pasta `.claude/`: convenções, skills e comandos que são
 copiados para outros projetos e evoluem aqui. O domínio deste repositório é a

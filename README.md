@@ -1,8 +1,9 @@
-# .claude-generica
+# ARK — Agent Rules Kit
 
 Template reutilizável da pasta `.claude/` — convenções, skills e comandos
 compartilhados entre projetos, para não reconstruir tudo do zero a cada
-repositório novo.
+repositório novo. A arca que carrega o mesmo processo de repositório em
+repositório.
 
 ## Modelo de reuso
 
@@ -117,7 +118,7 @@ Os três primeiros já estão em `.claude/.gitignore`, que viaja junto na cópia
 
 ## Versões
 
-Cada versão é uma tag anotada com uma [Release](https://github.com/PPrauchner/.claude-generica/releases)
+Cada versão é uma tag anotada com uma [Release](https://github.com/PPrauchner/ARK-Agent-Rules-Kit/releases)
 descrevendo o que mudou e por quê. A numeração é um **odômetro, não semver**:
 
 - **MAJOR** — skill ou comando novo (capacidade nova).
