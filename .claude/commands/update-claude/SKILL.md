@@ -70,7 +70,13 @@ Clone raso da tag numa pasta temporária e apague no fim:
 
 ```bash
 git clone --depth 1 --branch <tag> https://github.com/PPrauchner/.claude-generica.git <tmp>
+git -C <tmp> rev-parse HEAD
 ```
+
+O `rev-parse` no clone é a única forma confiável de obter o commit da versão. As
+tags aqui são **anotadas**, então o `ls-remote` do passo anterior devolve o SHA do
+*objeto tag*, não o do commit — gravar aquele SHA no marcador registra um
+identificador que não resolve para conteúdo nenhum.
 
 ### 3. Estabelecer a base
 
@@ -126,7 +132,7 @@ sugestão é *manter*.
 {
   "repo": "PPrauchner/.claude-generica",
   "tag": "v4.0.0",
-  "commit": "<sha da tag>",
+  "commit": "<saída do rev-parse do passo 2 — o commit, não o objeto tag>",
   "updated_at": "<AAAA-MM-DD>"
 }
 ```
@@ -138,13 +144,25 @@ update volta a ser cego.
 
 ```bash
 git ls-files .claude
+git rev-parse --abbrev-ref HEAD
+gh repo view --json defaultBranchRef --jq .defaultBranchRef.name
 ```
 
-- **Há arquivos rastreados:** `git add .claude` e um commit atômico só desses
-  caminhos — funciona mesmo com o resto do repo sujo, sem encostar em trabalho em
-  andamento.
 - **Nenhum arquivo rastreado** (o projeto não versiona `.claude/`): escreva os
-  arquivos e não commite nada.
+  arquivos e não commite nada. Fim.
+- **Há arquivos rastreados, na branch default:** `git add .claude` e um commit
+  atômico só desses caminhos — funciona mesmo com o resto do repo sujo, sem
+  encostar em trabalho em andamento.
+- **Há arquivos rastreados, numa branch de tópico:** **pare e pergunte.** Commitar
+  aqui enfia a atualização do template dentro de um PR sobre outro assunto. Ofereça
+  as três saídas — deixar sem commitar, commitar na branch atual mesmo, ou uma
+  branch nova a partir da default — e siga a escolha. **Não crie branch por conta
+  própria:** branch é decisão do usuário neste template, a mesma regra que o
+  `/open-pr` segue.
+
+> Se o usuário escolher a branch nova, avise que os arquivos **somem da branch de
+> trabalho** ao voltar para ela — o comando fica commitado, mas indisponível onde
+> ele está sentado até haver merge.
 
 **Nunca faça push.** Mensagem no formato do projeto, por exemplo:
 
