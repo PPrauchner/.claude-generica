@@ -6,9 +6,11 @@ repositório novo.
 
 ## Modelo de reuso
 
-**Copy-paste manual.** Cada projeto copia esta pasta `.claude/` uma vez e
-diverge livremente dali — não há sincronização automática com este repositório.
-Atualizações feitas aqui não se propagam sozinhas para quem já copiou.
+**Cópia com atualização sob demanda.** Cada projeto copia esta pasta `.claude/`
+uma vez e diverge livremente dali. Nada se propaga sozinho: quando quiser trazer
+uma versão nova, rode `/update-claude` dentro do projeto — ele aplica o que mudou
+aqui e preserva o que o projeto customizou (ver
+[Como atualizar](#como-atualizar-um-projeto-que-já-copiou)).
 
 ## O que tem aqui
 
@@ -50,6 +52,28 @@ que o código já responde (stack, comandos, estrutura) e usa uma sessão de
 `grill-with-docs` para o que o código não sabe dizer — o glossário de domínio do
 `CONTEXT.md` e as restrições do projeto. Nunca sobrescreve o que já existe: completa
 apenas o que falta e leva contradições para o grill.
+
+## Como atualizar um projeto que já copiou
+
+Rode o comando **`/update-claude`** dentro do projeto, sem argumentos. Ele traz o
+`.claude/` para a versão vigente (a tag mais recente daqui) e preserva o que é do
+projeto:
+
+- **sobrescreve** skills, comandos, hooks, scripts e o `karpathy-principles.md`;
+- **não toca** no `rules/code-conventions.md` — é ali que mora o modelo de domínio
+  que o projeto escreveu;
+- **acrescenta ao** `settings.json` só as chaves que faltam, mantendo os hooks
+  próprios do projeto (sem isso, features novas chegam desligadas);
+- pergunta **uma vez**, numa lista pré-marcada com o motivo de cada sugestão, sobre
+  arquivos do projeto que sumiram da versão nova;
+- grava `.claude/.template.json` com a versão aplicada, para o próximo update saber
+  de onde partiu.
+
+Se o repositório versiona o `.claude/`, ele fecha com um commit atômico só desses
+caminhos — nunca faz push.
+
+Num repositório que ainda não tem template instalado, `/update-claude` oferece o
+`adopt-repo` como passo opcional antes de instalar.
 
 ### Skills disponíveis globalmente (opcional)
 
