@@ -81,7 +81,9 @@ identificador que não resolve para conteúdo nenhum.
 ### 3. Estabelecer a base
 
 - **Com marcador:** a base é a tag registrada nele. Dá para saber o que o template
-  mudou entre ela e a vigente.
+  mudou entre ela e a vigente. O marcador que veio junto na cópia crua do ARK tem
+  só `repo` e `tag` — o template não sabe o SHA da própria tag antes de cortá-la.
+  A `tag` basta para a base; o passo 6 grava o marcador completo.
 - **Sem marcador:** a base é **desconhecida**. Não infira.
 
 > Inferir a base casando o conteúdo com as tags **não funciona** e já produziu

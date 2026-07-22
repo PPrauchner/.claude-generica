@@ -42,6 +42,13 @@ merece tag própria.
 
 ## Procedimento
 
+**Antes do tag, suba a `tag` de [`.claude/.template.json`](../.claude/.template.json)
+para a versão que vai sair, e commite.** Esse marcador viaja na cópia crua da pasta,
+e é ele que dá base ao primeiro `/update-claude` de quem copiou à mão. Marcador
+atrasado é pior que marcador ausente: ele afirma uma base falsa com cara de fato, que
+é exatamente o que o [ADR-0001](./adr/0001-nao-inferir-a-versao-de-origem.md) recusa
+fazer por heurística. Nada automatiza essa checagem — o hook de drift não a cobre.
+
 ```bash
 git tag -a vX.Y.Z -m "vX.Y.Z - <resumo>"
 git push origin versao_vigente
@@ -74,5 +81,6 @@ Resumo de uma linha por release; as notas completas estão na aba *Releases*.
 | `v4.0.1` | `/update-claude`: commit (não objeto tag) no marcador; para em branch de tópico. |
 | `v4.0.2` | `/update-claude`: direção do fim-de-linha era o inverso; `.sh` com CRLF não roda. |
 | `v4.0.3` | Template renomeado para ARK; `/update-claude` aponta para o repositório novo. |
+| `v4.0.4` | `/review-pr`: qualidade vira subagente com brief próprio. Marcador de origem passa a viajar na cópia. |
 
-**Próxima:** skill/comando novo → `v5.0.0`; alteração → `v4.0.4`.
+**Próxima:** skill/comando novo → `v5.0.0`; alteração → `v4.0.5`.

@@ -112,7 +112,7 @@ criado à mão:
 | `settings.local.json` | você, a partir do `.example` | **não** — tem caminhos da sua máquina |
 | `current-issue` | `/start-issue` | **não** — estado da sessão |
 | `board.env` | `board-move.sh` (cache dos IDs do board) | **não** — específico do repositório |
-| `.template.json` | `/update-claude` (versão aplicada) | **sim** — sem ele o próximo update não sabe de onde partiu |
+| `.template.json` | já vem na cópia (tag da release); `/update-claude` reescreve | **sim** — sem ele o próximo update não sabe de onde partiu |
 
 Os três primeiros já estão em `.claude/.gitignore`, que viaja junto na cópia.
 
