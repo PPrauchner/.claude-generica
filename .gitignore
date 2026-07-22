@@ -2,6 +2,10 @@
 # Os artefatos de dentro de .claude/ são ignorados por .claude/.gitignore, que
 # viaja junto ao copiar a pasta para outro projeto.
 
-# Política de release deste repositório-template: é meta do template, não parte
-# dele — não deve ser copiada para os projetos que reusam a pasta .claude/.
+# Notas locais desta máquina — meta do template, não parte dele.
 CLAUDE.local.md
+
+# Ferramenta de manutenção só deste repositório: barra `git tag -a` enquanto houver
+# item sem linha no README. Fica fora de .claude/ para não ser copiada, e fora do
+# git porque os projetos adotados não cortam release deste jeito.
+scripts/readme-drift.sh
