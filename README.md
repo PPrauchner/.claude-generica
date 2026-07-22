@@ -59,3 +59,17 @@ Preferência pessoal, não uma etapa obrigatória do reuso: rodar
 precisar copiá-las. Quem não usar essa estratégia simplesmente não roda o
 script — as skills continuam funcionando normalmente a partir da cópia local
 em `.claude/skills/`.
+
+## Créditos
+
+Boa parte das skills em `.claude/skills/` vem de
+[**mattpocock/skills**](https://github.com/mattpocock/skills), de Matt Pocock,
+publicado sob MIT. Os comandos de workflow, as rules, os hooks, os scripts e a
+skill `adopt-repo` foram escritos aqui.
+
+A fronteira exata entre um e outro está em [`NOTICE.md`](./NOTICE.md).
+
+## Licença
+
+[MIT](./LICENSE) — copie, modifique e redistribua à vontade, mantendo o aviso de
+copyright.
