@@ -1,6 +1,6 @@
 ---
 name: review-pr
-description: Revisa um Pull Request quanto à conformidade com a issue/DoD e a documentação do projeto, delega a análise de qualidade de código ao /code-review, e executa a ação escolhida (aprovar, solicitar mudanças, comentar). Use when reviewing a pull request. $ARGUMENTS
+description: Revisa um Pull Request quanto à conformidade com a issue/DoD e a documentação do projeto, delega a análise de qualidade de código a um subagente, e executa a ação escolhida (aprovar, solicitar mudanças, comentar). Use when reviewing a pull request. $ARGUMENTS
 ---
 
 # Review PR
@@ -11,8 +11,7 @@ Revisa o PR `#$ARGUMENTS` em duas frentes complementares:
   a Definition of Done da issue e respeita a terminologia (`CONTEXT.md`) e as
   decisões (`docs/adr/`).
 - **Qualidade de código** (delegada): *o código está bom?* — bugs, simplificações,
-  eficiência. Isso é responsabilidade do `/code-review`; este comando **o invoca**
-  em vez de reescrever a análise.
+  eficiência. Vai para um subagente próprio, que analisa o PR inteiro de uma vez.
 
 O veredito final funde as duas frentes em um único relatório.
 
@@ -42,18 +41,27 @@ Extraia do corpo as issues referenciadas (`Closes #N`, `Fixes #N`, `Part of #N`)
   a terminologia de domínio; `docs/adr/` para decisões que o PR possa violar. Se o
   projeto não tiver esses arquivos, siga sem eles.
 
-### 4. Qualidade de código — delegar ao /code-review
+### 4. Qualidade de código — preparar o subagente
 Com a árvore limpa (passo 1), traga o diff do PR para o working tree local:
 ```bash
 gh pr checkout $ARGUMENTS
 ```
-Invoque o **`/code-review`** (nível `high` por padrão; **sem** `--comment` — quem
-publica é este comando) sobre o diff da branch do PR e colete os achados.
+Preencha o template de [QUALITY-REVIEW-BRIEF.md](./QUALITY-REVIEW-BRIEF.md) com o
+título e o corpo do PR **verbatim** — o subagente não vê esta conversa, e é do corpo
+que ele tira os pontos de julgamento que o autor deixou em aberto.
 
-O `/code-review` roda **uma vez, sobre o PR inteiro** — nunca por issue. Recortar o
-diff por issue é inviável (issues compartilham arquivos) e N execuções produziriam os
+**Não spawne ainda:** o passo 5 dispara este agente na mesma mensagem que os de
+conformidade, para que rodem concorrentes. Se a conformidade for inline (1 issue,
+nenhuma, ou `PR_REVIEW_PARALLEL=off`), spawne-o aqui e siga para o passo 5 enquanto
+ele roda.
+
+Este agente roda **uma vez, sobre o PR inteiro** — nunca por issue. Recortar o diff
+por issue é inviável (issues compartilham arquivos) e N execuções produziriam os
 mesmos achados repetidos. A divisão é: *qualidade = PR inteiro, conformidade = por
 issue*.
+
+Ele roda **sempre**, inclusive com `PR_REVIEW_PARALLEL=off`: aquele toggle existe para
+não multiplicar agentes de conformidade, e a qualidade é sempre um agente só.
 
 **Não restaure a branch ainda** — o passo 5 precisa da branch do PR em checkout.
 
@@ -67,7 +75,8 @@ issues vira 4 revisões independentes em vez de uma análise que dilui as quatro
    [ISSUE-REVIEW-BRIEF.md](./ISSUE-REVIEW-BRIEF.md) com o corpo da issue **verbatim**
    — o subagente não vê esta conversa.
 2. Spawne todos com `Agent` (`subagent_type: general-purpose`) **numa única
-   mensagem**, para que rodem concorrentemente.
+   mensagem**, junto com o agente de qualidade do passo 4, para que rodem
+   concorrentemente.
 3. Eles compartilham esta working tree em modo leitura. Por isso o brief proíbe
    escrever, commitar e trocar de branch: um subagente que mexesse na árvore
    corromperia a revisão dos outros.
@@ -94,7 +103,7 @@ git checkout -   # ou a branch guardada no passo 1
 ```
 
 ### 6. Fundir em um veredito único
-Severidade dos achados, venham eles da conformidade ou do `/code-review`:
+Severidade dos achados, venham eles da conformidade ou da qualidade:
 
 - **BLOQUEADOR** — DoD não cumprida OU bug crítico. Impede aprovação.
 - **DESVIO** — divergência de requisito, terminologia (`CONTEXT.md`) ou decisão (`docs/adr/`).
@@ -127,9 +136,9 @@ Estrutura do veredito (exibir **inline**, não salvar arquivo):
 - ⚪ MENOR: [simplificação]
 ```
 
-As seções por issue são os relatórios dos subagentes, **coladas como vieram** — o
-formato do brief já é este. Não reescreva nem resuma: reescrever achado de revisão é
-como se perde a referência de arquivo/linha.
+Tanto as seções por issue quanto a de qualidade são os relatórios dos subagentes,
+**colados como vieram** — o formato dos briefs já é este. Não reescreva nem resuma:
+reescrever achado de revisão é como se perde a referência de arquivo/linha.
 
 Omita seções e severidades vazias. Sem nenhum BLOQUEADOR, o PR é aprovável. Sem issues
 vinculadas, use uma única seção "Conformidade (DoD inferida do PR)" no lugar das

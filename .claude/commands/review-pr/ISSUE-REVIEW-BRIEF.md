@@ -41,7 +41,7 @@ Avalie três coisas:
   outros subagentes estão lendo esta mesma working tree agora.
 - Postar no GitHub (`gh pr review`, `gh pr comment`, `gh issue ...`). Quem publica é
   o orquestrador.
-- Rodar `/code-review`.
+- Avaliar qualidade de código: outro subagente já faz isso sobre o PR inteiro.
 
 ## Responda EXATAMENTE neste formato, sem preâmbulo
 
