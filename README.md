@@ -29,13 +29,16 @@ aqui e preserva o que o projeto customizou (ver
 - **`.claude/commands/`** — comandos de workflow encadeados num pipeline:
   `/start-issue` → `/tdd` → `/commit` → `/open-pr` → `/review-pr`, com `/afk-queue`
   orquestrando o trecho `start-issue → commit` para uma fila inteira de issues.
+  Começando de um tronco (`main`, `dev`, …), a entrada do pipeline cria a branch de
+  trabalho sozinha — ver o toggle [`AUTO_BRANCH`](#toggles).
   Fora do pipeline, `/update-claude`. Detalhes em
   [`commands/README.md`](.claude/commands/README.md).
 - **`.claude/hooks/`** — o que roda sozinho em eventos da sessão (lembrete de commit
   ao encerrar, log das sessões de grill) — ver
   [`hooks/README.md`](.claude/hooks/README.md).
 - **`.claude/scripts/`** — utilitários chamados pelos comandos ou na mão (sync do
-  board, symlinks das skills) — ver [`scripts/README.md`](.claude/scripts/README.md).
+  board, criação da branch de trabalho, symlinks das skills) — ver
+  [`scripts/README.md`](.claude/scripts/README.md).
 - **`.claude/settings.json`** — settings versionadas: registro dos hooks e os
   [toggles](#toggles). `settings.local.json.example` é o template do
   `settings.local.json` de cada máquina/projeto, que nunca é commitado.
@@ -101,6 +104,7 @@ Comportamentos que chegam **ligados** ao copiar a pasta. Desligam-se com `off`
 | `BOARD_SYNC` | Issues não são movidas no board por `/start-issue` e `/open-pr`. |
 | `PR_REVIEW_PARALLEL` | `/review-pr` avalia a conformidade de todas as issues inline, sem subagentes. |
 | `GRILL_LOG` | Sessões de grill não são registradas em `docs/grills_logs/`. |
+| `AUTO_BRANCH` | `/start-issue` e `/afk-queue` não criam branch: implementam na branch em checkout, mesmo que seja o tronco. |
 
 ## Arquivos gerados
 

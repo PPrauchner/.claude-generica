@@ -50,6 +50,10 @@ continuam commitando automaticamente. Consequência: no AFK quem pergunta "abrir
 
 **P:** Um PR agrupa quantas issues, e de onde vem a branch?
 **R:** **1 PR = N issues, branch criada por você.** Nada no template cria branch.
+> **Revisto em 2026-08-02** por [`auto-branch.md`](./auto-branch.md): partindo de um
+> tronco, `/start-issue` e `/afk-queue` passaram a criar a branch (toggle
+> `AUTO_BRANCH`). O resto desta resposta continua valendo — inclusive o `/open-pr`,
+> que segue abortando na branch default sem criar nada.
 `/open-pr` abre o PR da branch atual e descobre as issues lendo os rodapés
 `Closes #N` / `Part of #N` dos commits (que o `/commit` já escreve), movendo todas
 para *In review*. Aborta se a branch atual for a default. É isso que faz o item 3

@@ -169,8 +169,9 @@ gh repo view --json defaultBranchRef --jq .defaultBranchRef.name
   aqui enfia a atualização do template dentro de um PR sobre outro assunto. Ofereça
   as três saídas — deixar sem commitar, commitar na branch atual mesmo, ou uma
   branch nova a partir da default — e siga a escolha. **Não crie branch por conta
-  própria:** branch é decisão do usuário neste template, a mesma regra que o
-  `/open-pr` segue.
+  própria:** o `ensure-branch.sh` existe para separar *trabalho de issue* do tronco,
+  e atualizar o template não é uma issue — não há número nem título para nomear a
+  branch. Aqui a escolha continua sendo do usuário, como no `/open-pr`.
 
 > Se o usuário escolher a branch nova, avise que os arquivos **somem da branch de
 > trabalho** ao voltar para ela — o comando fica commitado, mas indisponível onde

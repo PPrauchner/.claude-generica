@@ -12,6 +12,20 @@ Utilitários chamados **por um comando** (ou por você, na mão). Diferente dos
   ```bash
   bash .claude/scripts/board-move.sh <numero-da-issue> <in-progress|in-review>
   ```
+- **[ensure-branch.sh](./ensure-branch.sh)** — cria a branch de trabalho quando a
+  sessão está num tronco (`main`, `master`, `dev`, `develop`, `development` ou a
+  branch default do repositório, lida de `refs/remotes/origin/HEAD`). Chamado por
+  `/start-issue` (`issue/<N>-<slug>`) e `/afk-queue` (`afk/<números>`, com faixas:
+  `1 2 3 7 20` → `afk/1-3_7_20`, hífen é "até" e underscore separa). Fora do tronco
+  não faz nada. **Falha ruidosamente** (exit ≠ 0) se não conseguir criar a branch —
+  ao contrário do `board-move.sh`, e de propósito: seguir sem o board não custa nada,
+  seguir sem a branch despeja os commits no tronco, que é o que ele existe para
+  evitar. Se a branch já existe, faz checkout dela e avisa. Imprime no stdout a
+  branch resultante, ou nada quando não havia o que fazer.
+  ```bash
+  bash .claude/scripts/ensure-branch.sh issue 123 "Título da issue"
+  bash .claude/scripts/ensure-branch.sh afk 12 15 20
+  ```
 - **[link-skills.sh](./link-skills.sh)** — cria symlinks de `skills/*` em
   `~/.claude/skills`, deixando as skills deste projeto disponíveis em qualquer outro.
   Preferência pessoal, não etapa obrigatória: sem rodar, as skills seguem funcionando
@@ -21,9 +35,13 @@ Utilitários chamados **por um comando** (ou por você, na mão). Diferente dos
 
 ## Desligar
 
-`BOARD_SYNC=off` no bloco `env` de [`../settings.json`](../settings.json) faz o
-`board-move.sh` sair na primeira linha — os comandos continuam funcionando, só não
-mexem no board.
+No bloco `env` de [`../settings.json`](../settings.json):
+
+- `BOARD_SYNC=off` faz o `board-move.sh` sair na primeira linha — os comandos
+  continuam funcionando, só não mexem no board.
+- `AUTO_BRANCH=off` faz o `ensure-branch.sh` sair na primeira linha — a branch volta
+  a ser inteiramente decisão sua, e o `/start-issue` e o `/afk-queue` implementam na
+  branch que estiver em checkout, tronco ou não.
 
 ## Fim de linha
 

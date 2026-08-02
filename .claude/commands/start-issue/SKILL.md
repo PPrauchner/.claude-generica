@@ -41,7 +41,30 @@ Aguardar confirmação.
 propostas (título, escopo, dependências). Aguardar confirmação e ajustes antes de
 seguir.
 
-### 5. Iniciar implementação
+Se a sessão estiver num tronco (ver passo 5), inclua no resumo a linha
+`branch: issue/<N>-<slug>` — o usuário confirma o plano e o nome da branch de uma
+vez só, sem uma pergunta a mais.
+
+### 5. Garantir a branch de trabalho
+Só **depois** da confirmação do passo 4 — assim uma recusa não deixa branch órfã:
+```bash
+bash .claude/scripts/ensure-branch.sh issue $ARGUMENTS "<título da issue>"
+```
+O script cria `issue/<N>-<slug-do-título>` a partir da branch atual **apenas** se ela
+for um tronco (`main`, `master`, `dev`, `develop`, `development` ou a branch default
+do repositório). Fora do tronco ele não faz nada e a issue é implementada na branch
+atual — é assim que duas issues relacionadas empilham commits de propósito, e é o que
+mantém o `/afk-queue` sequencial com uma branch só para a fila inteira.
+
+Ao contrário do `board-move.sh`, este script **falha** se não conseguir criar a
+branch (exit ≠ 0). É proposital: seguir sem ela despejaria os commits no tronco,
+exatamente o que ele existe para evitar. Se ele falhar, **pare** e mostre o erro ao
+usuário. Se a branch já existia, ele avisa e retoma o trabalho nela.
+
+Desligar: `AUTO_BRANCH=off` no bloco `env` de `.claude/settings.json` — aí a branch
+volta a ser inteiramente decisão do usuário.
+
+### 6. Iniciar implementação
 Comece pela primeira sub-tarefa (ou pela issue diretamente, se simples). Implemente via tdd (skill em `.claude/skills/tdd/SKILL.md`).
 
 Ao terminar, o pipeline segue em `/commit` e depois `/open-pr` — é o `/open-pr` que

@@ -25,8 +25,12 @@ git status --porcelain
 ```
 
 - **Branch atual == branch default:** **pare.** Não existe PR de `main` para `main`.
-  Peça ao usuário para criar a branch — nada neste template cria branch
-  automaticamente, é decisão dele.
+  Peça ao usuário para criar a branch e mover os commits para lá — **não crie você**.
+  O `/start-issue` e o `/afk-queue` criam a branch *antes* de implementar
+  (`ensure-branch.sh`); aqui os commits já estão no tronco, e tirá-los de lá é outra
+  operação, com risco de perder trabalho. Chegar neste ponto significa que a branch
+  não foi criada lá atrás — provavelmente `AUTO_BRANCH=off`, ou commits feitos fora
+  do pipeline.
 - **Árvore suja:** **pare** e peça para rodar `/commit` antes. Abrir o PR deixando
   mudanças para trás produz um PR que não corresponde ao trabalho feito.
 - **Já existe PR para esta branch** (`gh pr view --json url,state`): não crie outro.
