@@ -84,5 +84,6 @@ Resumo de uma linha por release; as notas completas estão na aba *Releases*.
 | `v4.0.4` | `/review-pr`: qualidade vira subagente com brief próprio. Marcador de origem passa a viajar na cópia. |
 | `v4.0.5` | `/start-issue` e `/afk-queue` criam a branch de trabalho ao partir de um tronco (`AUTO_BRANCH`). |
 | `v4.0.6` | `/start-issue` genérico: tracker via `docs/agents/`, plano vira checklist na issue, régua de complexidade verificável. |
+| `v4.0.7` | `/commit` e `/open-pr` genéricos: tracker via `docs/agents/`, checklist mantido no `/commit`, base real do PR. |
 
-**Próxima:** skill/comando novo → `v5.0.0`; alteração → `v4.0.7`.
+**Próxima:** skill/comando novo → `v5.0.0`; alteração → `v4.0.8`.
