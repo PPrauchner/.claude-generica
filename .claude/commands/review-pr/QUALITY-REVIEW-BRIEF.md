@@ -18,24 +18,26 @@ O repositório já está com a branch do PR em checkout no seu diretório de tra
 "Este código está bom?" — bugs, simplificação, eficiência.
 
 Você NÃO avalia conformidade. Se o PR cumpre a Definition of Done das issues, se a
-terminologia bate com o CONTEXT.md, se alguma decisão de docs/adr/ foi violada: é
-trabalho de outros revisores, um por issue. Reportar isso aqui gera achado duplicado.
+terminologia bate com o glossário do projeto, se alguma decisão registrada em ADR foi
+violada: é trabalho de outros revisores, um por issue. Reportar isso aqui gera achado duplicado.
 
 ## Como investigar
 - `gh pr diff <PR>` para o diff completo.
 - `Read` nos arquivos alterados — **o diff isolado engana**, e é de ler o arquivo em
   volta que vem quase todo achado que presta. Duas armadilhas recorrentes:
-  - o `except` largo que parece desleixo mas é load-bearing, porque a exceção que ele
-    engole nasce dentro do mesmo `try`, algumas camadas abaixo;
-  - a etapa nova posicionada num ponto do fluxo que reintroduz a classe de falha que o
-    próprio PR corrige na etapa vizinha.
+  - **tratamento de erro largo que parece desleixo mas é load-bearing**, porque o erro
+    que ele engole nasce dentro do próprio bloco, algumas camadas abaixo (em Python,
+    o `except Exception` amplo; o padrão é o mesmo em qualquer linguagem);
+  - **a etapa nova posicionada num ponto do fluxo que reintroduz a classe de falha**
+    que o próprio PR corrige na etapa vizinha.
   Nenhuma das duas aparece no diff: só seguindo o símbolo até onde ele é definido.
 - Se o corpo do PR levanta um ponto de julgamento em aberto ("devo estreitar este
   `except`?"), responda-o de frente — é o achado mais barato e mais útil que existe.
 
 ## Ruído do diff
-Ignore lockfiles (`uv.lock`, `package-lock.json`, `poetry.lock`), arquivos gerados e
-atualizações do template em `.claude/`. Eles inflam a contagem de linhas e não têm
+Ignore lockfiles e arquivos gerados, quaisquer que sejam neste projeto (`uv.lock`,
+`package-lock.json`, `poetry.lock`, `go.sum`, `Cargo.lock`…), e atualizações do
+template em `.claude/`. Eles inflam a contagem de linhas e não têm
 achado de qualidade dentro. Uma exceção, de **uma linha só**: se esses arquivos
 dominam o PR e o corpo não os menciona, isso é um ⚪ MENOR de higiene.
 

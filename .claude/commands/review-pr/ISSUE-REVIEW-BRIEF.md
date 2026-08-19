@@ -16,8 +16,11 @@ O repositório já está com a branch do PR em checkout no seu diretório de tra
 <CORPO DA ISSUE, VERBATIM>
 
 ## Documentação do projeto
-<"CONTEXT.md existe — leia para conferir a terminologia de domínio." | "Sem CONTEXT.md.">
-<"docs/adr/ existe — leia as decisões que o PR possa violar." | "Sem docs/adr/.">
+O orquestrador já localizou estes arquivos (passo 3 da skill) — use os caminhos que
+ele passar, não presuma a raiz: num monorepo o contexto certo não fica lá.
+
+<"Glossário de domínio em <CAMINHO> — leia para conferir a terminologia." | "Sem glossário de domínio.">
+<"Decisões em <CAMINHO> — leia as que o PR possa violar." | "Sem ADRs.">
 
 ## Sua pergunta, e só ela
 "Este PR cumpre a Definition of Done DESTA issue?"
@@ -27,8 +30,8 @@ revisor, que analisa o PR inteiro. Reportá-los aqui gera achado duplicado.
 
 Avalie três coisas:
 1. Cada critério de aceite da issue foi implementado? Nomeie os que não foram.
-2. A terminologia bate com o glossário do CONTEXT.md?
-3. Alguma decisão registrada em docs/adr/ foi violada?
+2. A terminologia bate com o glossário indicado acima?
+3. Alguma decisão registrada nos ADRs indicados acima foi violada?
 
 ## Como investigar
 - `gh pr diff <PR>` para o diff completo.
@@ -49,7 +52,7 @@ Avalie três coisas:
 <Uma frase: o que o PR entregou desta issue.>
 
 - 🔴 BLOQUEADOR: <critério de aceite não cumprido — cite o critério e o arquivo>
-- 🟡 DESVIO: <divergência de terminologia (CONTEXT.md) ou de decisão (docs/adr/)>
+- 🟡 DESVIO: <divergência de terminologia (glossário) ou de decisão (ADR)>
 - ⚪ MENOR: <nit ou convenção>
 
 Omita as linhas de severidade que não tiverem achados. Sem achado nenhum, deixe só o
