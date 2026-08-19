@@ -2,8 +2,14 @@
 
 ## Princípios
 
-- **Uma camada por commit** — `models/`, `services/`, `api/v1/` em commits separados, mesmo que do mesmo domínio
-- **Config/deps separados de features** — `pyproject.toml`, `.env.example`, arquivos de configuração = commit independente
+- **Uma camada arquitetural por commit** — se o projeto separa responsabilidades em
+  camadas, cada uma vai num commit, mesmo que do mesmo domínio. Num app web em
+  camadas isso seria `models/`, `services/`, `api/v1/`; noutro layout serão outras
+  pastas. As camadas deste projeto, quando definidas, ficam
+  [abaixo](#camadas-deste-projeto).
+- **Config/deps separados de features** — o manifesto de dependências do projeto
+  (qualquer que seja: `pyproject.toml`, `package.json`, `go.mod`, `Cargo.toml`) e os
+  arquivos de configuração de ambiente = commit independente.
 - **Scaffolding separado de implementação** — criar estrutura de arquivo ≠ implementar lógica
 - **Um domínio por commit** — mudanças em dois módulos de domínio distintos (ex.:
   `<módulo_a>/` e `<módulo_b>/`) = dois commits
@@ -25,3 +31,14 @@
 | `docs` | Documentação (ADRs, CONTEXT.md, README) |
 | `config` | Configuração de ambiente/build |
 | `scripts` | Scripts utilitários |
+
+## Camadas deste projeto
+
+> Preencher na sessão de *grill with docs* deste projeto (skill `grill-with-docs`,
+> log em `docs/grills_logs/`). O que entra aqui: quais pastas são camadas neste
+> repositório, ou a declaração de que ele não é organizado em camadas — nesse caso
+> vale só "um domínio por commit".
+>
+> Vazio significa: o agente infere as camadas da estrutura que encontrar.
+
+<preencher>
