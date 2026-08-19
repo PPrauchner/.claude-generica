@@ -4,7 +4,7 @@ Commands de workflow
 
 - **[afk-queue](./afk-queue/SKILL.md)** — Work through a queue of AFK-ready issues unattended, one clean-context subagent per issue, so the session never accumulates unrelated history.
 - **[commit](./commit/SKILL.md)** — Analisa mudanças não-commitadas e realiza commits atômicos seguindo as convenções do projeto.
-- **[start-issue](./start-issue/SKILL.md)** — Inicia o trabalho em uma issue do GitHub: lê a issue, avalia complexidade e prepara a implementação. Move a issue para *In progress* no board.
+- **[start-issue](./start-issue/SKILL.md)** — Inicia o trabalho em uma issue: lê a issue no tracker do projeto (`docs/agents/issue-tracker.md`), avalia complexidade e prepara a implementação. Move a issue para *In progress* no board.
 - **[open-pr](./open-pr/SKILL.md)** — Abre o PR da branch atual, descobrindo nos rodapés dos commits quais issues foram implementadas, e move essas issues para *In review*.
 - **[review-pr](./review-pr/SKILL.md)** — Revisa um PR quanto à conformidade com a issue/DoD e a documentação, delegando a análise de qualidade de código a um subagente sobre o PR inteiro, e executa a ação escolhida no GitHub. Com 2+ issues, avalia cada uma em um subagente paralelo.
 - **[update-claude](./update-claude/SKILL.md)** — Atualiza o `.claude/` deste repositório para a versão vigente do template, preservando as customizações do projeto. Fora do pipeline: roda quando quiser, sem argumentos.

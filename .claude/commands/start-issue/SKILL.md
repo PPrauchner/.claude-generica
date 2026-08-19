@@ -23,8 +23,9 @@ local, ou o que estiver descrito ali). Use o comando de lá.
 > sem `docs/agents/issue-tracker.md` — assumindo GitHub; rode
 > `/setup-matt-pocock-skills` se não for.
 
-Não pare por causa disso: ao contrário do `/afk-queue`, este comando não exige a
-configuração do tracker para funcionar.
+Não pare por causa disso. O `/afk-queue` exige esse arquivo e para sem ele; aqui o
+fallback basta. A diferença é proposital: lá a fila roda sem ninguém olhando, e uma
+suposição errada estraga N issues em silêncio; aqui o usuário lê o aviso e corrige.
 
 Receita GitHub:
 ```bash
@@ -120,9 +121,9 @@ Regras:
 - **Um comentário só.** Antes de postar, procure um comentário existente que comece
   com `## Plano de execução`. Se houver, **atualize-o**; re-rodar `/start-issue` na
   mesma issue nunca duplica o plano.
-- **Marque conforme avança.** Ao concluir cada sub-tarefa no passo 6, reescreva o
-  comentário com o item marcado. O checklist desatualizado não serve para retomar
-  contexto, que é a razão de ele existir.
+- **Quem marca é o `/commit`.** Este comando cria o checklist; marcar os itens é do
+  `/commit`, que roda depois de cada sub-tarefa e sabe o que de fato foi gravado.
+  Marcar aqui registraria intenção, não trabalho.
 
 Receita GitHub — criar:
 ```bash

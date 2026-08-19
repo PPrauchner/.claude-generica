@@ -9,7 +9,10 @@ Runs a batch of issues to completion, one clean-context subagent per issue, so t
 orchestrating session's history never grows past a single issue's worth of work.
 
 The issue tracker must already be configured (`docs/agents/issue-tracker.md`) — if it
-isn't, stop and tell the user to run `/setup-matt-pocock-skills`. Every issue is driven
+isn't, stop and tell the user to run `/setup-matt-pocock-skills`. `/start-issue` and
+`/commit` fall back to GitHub with a warning instead of stopping; this command does
+not, on purpose. The queue runs with nobody watching, so a wrong assumption here
+spoils N issues in silence — there, the user reads the warning and corrects it. Every issue is driven
 through the issue-based skills (`/start-issue`, `/commit`), so there is no trackerless
 mode.
 
