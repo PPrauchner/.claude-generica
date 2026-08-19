@@ -82,5 +82,7 @@ Resumo de uma linha por release; as notas completas estão na aba *Releases*.
 | `v4.0.2` | `/update-claude`: direção do fim-de-linha era o inverso; `.sh` com CRLF não roda. |
 | `v4.0.3` | Template renomeado para ARK; `/update-claude` aponta para o repositório novo. |
 | `v4.0.4` | `/review-pr`: qualidade vira subagente com brief próprio. Marcador de origem passa a viajar na cópia. |
+| `v4.0.5` | `/start-issue` e `/afk-queue` criam a branch de trabalho ao partir de um tronco (`AUTO_BRANCH`). |
+| `v4.0.6` | `/start-issue` genérico: tracker via `docs/agents/`, plano vira checklist na issue, régua de complexidade verificável. |
 
-**Próxima:** skill/comando novo → `v5.0.0`; alteração → `v4.0.5`.
+**Próxima:** skill/comando novo → `v5.0.0`; alteração → `v4.0.7`.
