@@ -45,9 +45,11 @@ aqui e preserva o que o projeto customizou (ver
 
 ## Pré-requisitos
 
-- **[`gh`](https://cli.github.com/) autenticado** (`gh auth login`) — todo o pipeline
-  de issues e PR depende dele: `/start-issue`, `/open-pr`, `/review-pr`, `/afk-queue`
-  e as skills `triage`, `to-issues`, `to-prd`.
+- **[`gh`](https://cli.github.com/) autenticado** (`gh auth login`) — o pipeline de
+  PR depende dele: `/open-pr`, `/review-pr` e a movimentação de board. As skills de
+  issue (`/start-issue`, `/afk-queue`, `triage`, `to-issues`, `to-prd`) leem o tracker
+  de `docs/agents/issue-tracker.md` e funcionam também com GitLab (`glab`) ou markdown
+  local; sem esse arquivo, assumem GitHub.
 - **bash** — hooks e scripts são `.sh`. No Windows, o Git Bash que vem com o Git
   resolve. Atenção ao fim de linha: `.sh` gravado com CRLF não roda (`\r: command
   not found`).
