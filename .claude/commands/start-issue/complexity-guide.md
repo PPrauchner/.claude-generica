@@ -1,25 +1,62 @@
 # Guia de Complexidade
 
+Régua para o passo 3 do `/start-issue` decidir se a issue vira uma implementação
+direta ou um plano de sub-tarefas.
+
+Os critérios abaixo são **observáveis no repositório antes de codar** — o agente
+consegue verificar cada um lendo a issue e os arquivos. Estimativa de tempo não
+entra: o agente não tem como medir, e um critério que ele só pode chutar não torna
+a decisão reproduzível entre sessões.
+
+Os limiares são defaults. Aperte ou afrouxe na seção
+[Ajustes deste projeto](#ajustes-deste-projeto).
+
 ## NÃO quebrar (issue simples)
 
-- Bug fix em arquivo único ou poucos arquivos do mesmo módulo
-- Ajuste isolado, sem impacto em outras partes do sistema
-- Mudança em um único componente sem efeito cross-module
-- Adição de campo/parâmetro simples sem lógica nova
-- Estimativa menor que 1 hora de trabalho
+Quando **todos** valem:
+
+- Toca **um único módulo/diretório** — ou poucos arquivos vizinhos com a mesma
+  responsabilidade.
+- **Não cria interface pública nova** — nenhuma função, classe, endpoint, comando ou
+  formato de arquivo que outra parte do sistema passe a depender.
+- **Não exige teste dedicado novo** — a suíte existente já cobre o caminho, ou basta
+  um caso a mais num teste que já existe.
+- **Não tem dependência de ordem interna** — não há "isto precisa existir antes
+  daquilo" dentro da própria issue.
 
 ## QUEBRAR em sub-tarefas (issue complexa)
 
-- Nova feature que atravessa várias etapas do pipeline ou camadas
-- Mudança que afeta múltiplos módulos ao mesmo tempo
-- Criação de 3 ou mais arquivos em partes distintas do projeto
-- Envolve lógica nova que exige testes dedicados
-- Estimativa maior que 1,5 horas
+Quando **qualquer um** vale:
+
+- Toca **três ou mais módulos/diretórios distintos**.
+- Cria **interface pública nova** que outra parte da issue já consome — a interface
+  e seu consumidor são sub-tarefas separadas, nessa ordem.
+- Exige **arquivo de teste novo** para comportamento que ainda não existe.
+- Tem **dependência de ordem** entre partes: uma parte não roda enquanto a outra não
+  estiver pronta.
+- Junta **mudança de comportamento com migração/refatoração** do que já existe —
+  duas coisas que devem poder ser revisadas (e revertidas) em separado.
+
+Se a issue estoura essa régua com folga — a ponto de as sub-tarefas terem elas
+mesmas sub-tarefas —, ela não é uma issue: pare e proponha `/to-issues`.
 
 ## Formato das sub-tarefas
 
 Cada sub-tarefa precisa de:
-- **Título** — curto, imperativo (ex: "Implementar validação de entrada")
+
+- **Título** — curto, imperativo (ex.: "Implementar validação de entrada")
 - **Escopo** — o que exatamente será feito
-- **Referência** — ADR ou seção de `CONTEXT.md` relevante, se aplicável
+- **Referência** — ADR ou seção do `CONTEXT.md` relevante, se aplicável
 - **Dependências** — quais sub-tarefas devem ser concluídas antes
+
+## Ajustes deste projeto
+
+> Preencher na sessão de *grill with docs* deste projeto (skill `grill-with-docs`,
+> log em `docs/grills_logs/`). O que entra aqui: limiares diferentes ("neste repo,
+> dois módulos já bastam para quebrar"), unidades que o repo usa no lugar de
+> "módulo/diretório" (pacote, serviço, contexto), ou critérios próprios que a régua
+> genérica não captura.
+>
+> Vazio significa: valem os defaults acima.
+
+<preencher>
