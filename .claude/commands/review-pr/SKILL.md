@@ -15,6 +15,15 @@ Revisa o PR `#$ARGUMENTS` em duas frentes complementares:
 
 O veredito final funde as duas frentes em um único relatório.
 
+> **Este comando é GitHub.** Revisar PR é operação de forge, não de tracker: usa
+> `gh pr` de ponta a ponta e não tem equivalente configurável. O que ele lê do
+> projeto — a issue que serve de baseline e a documentação de domínio — é genérico.
+
+`$ARGUMENTS` é opcional: sem ele, o PR é derivado da branch atual
+(`gh pr view --json number --jq .number`). Se a branch não tiver PR aberto, **pare**
+e peça o número — é a mesma postura do `/open-pr`, que também trabalha a partir da
+branch.
+
 ## Workflow
 
 ### 1. Pré-condição: working tree limpa
@@ -26,6 +35,14 @@ git rev-parse --abbrev-ref HEAD   # branch atual — guardar para restaurar no f
 Se houver qualquer mudança pendente, **pare** e peça ao usuário para commitar ou
 `git stash` antes de continuar.
 
+**Guarde o nome da branch atual.** A restauração no passo 5 usa esse nome, nunca
+`git checkout -` — `-` significa "a branch anterior", que deixa de ser a certa assim
+que qualquer outra troca acontecer no meio.
+
+E restaure **em toda saída antecipada**: subagente que aborta, `gh` que erra, revisão
+interrompida. Terminar largado na branch do PR é pior que não revisar — o próximo
+`/commit` comita lá.
+
 ### 2. Buscar dados do PR
 ```bash
 gh pr view $ARGUMENTS --json number,title,body,headRefName,baseRefName,state,author,additions,deletions,files,url
@@ -33,13 +50,18 @@ gh pr view $ARGUMENTS --json number,title,body,headRefName,baseRefName,state,aut
 Extraia do corpo as issues referenciadas (`Closes #N`, `Fixes #N`, `Part of #N`).
 
 ### 3. Estabelecer o baseline (o que deveria ter sido feito)
-- **Com issue(s) vinculada(s):** `gh issue view N --json number,title,body,labels` — os
+- **Com issue(s) vinculada(s):** busque cada uma com o comando que
+  [`docs/agents/issue-tracker.md`](../../../docs/agents/issue-tracker.md) define para
+  este repositório. Sem esse arquivo, assuma GitHub
+  (`gh issue view N --json number,title,body,labels`) e avise em uma linha. Os
   critérios de aceite da issue são o baseline primário.
 - **Sem issue vinculada:** use o título + corpo do PR como declaração de intenção.
   Registre no veredito que a DoD foi **inferida do PR** (não havia issue).
-- **Documentação (ler preguiçosamente, só se existir):** `CONTEXT.md` para conferir
-  a terminologia de domínio; `docs/adr/` para decisões que o PR possa violar. Se o
-  projeto não tiver esses arquivos, siga sem eles.
+- **Documentação (ler preguiçosamente, só se existir):** onde ela mora, em ordem —
+  `docs/agents/domain.md`; senão `CONTEXT-MAP.md` na raiz, seguindo o mapa até o
+  contexto que o PR toca; senão `CONTEXT.md` + `docs/adr/` na raiz; senão siga sem
+  eles. Num monorepo, o `CONTEXT.md` da raiz costuma não ser o certo — é por isso que
+  a ordem importa.
 
 ### 4. Qualidade de código — preparar o subagente
 Com a árvore limpa (passo 1), traga o diff do PR para o working tree local:
@@ -73,7 +95,8 @@ issues vira 4 revisões independentes em vez de uma análise que dilui as quatro
 
 1. Para cada issue, preencha o template de
    [ISSUE-REVIEW-BRIEF.md](./ISSUE-REVIEW-BRIEF.md) com o corpo da issue **verbatim**
-   — o subagente não vê esta conversa.
+   — o subagente não vê esta conversa. Passe também os **caminhos** do glossário e
+   dos ADRs que você localizou no passo 3: o subagente não repete essa busca.
 2. Spawne todos com `Agent` (`subagent_type: general-purpose`) **numa única
    mensagem**, junto com o agente de qualidade do passo 4, para que rodem
    concorrentemente.
@@ -97,9 +120,10 @@ Compare o baseline (passo 3) com o diff. Procure:
 
 Leia com `Read` os arquivos alterados que precisarem de contexto.
 
-Quando **todos** os subagentes tiverem terminado, restaure a branch original:
+Quando **todos** os subagentes tiverem terminado, restaure a branch guardada no
+passo 1, pelo nome:
 ```bash
-git checkout -   # ou a branch guardada no passo 1
+git checkout <branch guardada no passo 1>
 ```
 
 ### 6. Fundir em um veredito único
@@ -145,7 +169,13 @@ vinculadas, use uma única seção "Conformidade (DoD inferida do PR)" no lugar 
 seções por issue.
 
 ### 7. Apresentar e perguntar a ação
-Exiba o veredito. Se o PR estiver `OPEN`, pergunte qual ação tomar:
+Exiba o veredito.
+
+**PR mergeado ou fechado:** a revisão para aqui, inline. Não ofereça ação de review —
+aprovar o que já foi mergeado não significa nada, e solicitar mudanças num PR fechado
+não tem a quem endereçar. Diga o estado do PR no relatório.
+
+**PR `OPEN`:** pergunte qual ação tomar:
 
 1. **Aprovar** — `gh pr review $ARGUMENTS --approve --body "<resumo>"`
 2. **Solicitar mudanças** — `gh pr review $ARGUMENTS --request-changes --body "<bloqueadores>"`
@@ -153,6 +183,10 @@ Exiba o veredito. Se o PR estiver `OPEN`, pergunte qual ação tomar:
 4. **Nada** — não escrever no GitHub, só deixar o veredito no chat
 
 ### 8. Executar a ação escolhida
-Rode apenas o comando `gh` correspondente à escolha. **Não** mova issues em board
-nem execute scripts externos — a integração com board é responsabilidade de cada
-projeto, não deste comando genérico.
+Rode apenas o comando `gh` correspondente à escolha. Confirme no relatório final em
+qual branch a sessão ficou.
+
+**Não** mova issues em board. Não é que board seja assunto de outro comando — o
+`/start-issue` e o `/open-pr` movem, via `board-move.sh`. É que **revisar não muda o
+estado da issue**: aprovado, quem fecha é o merge; mudanças solicitadas, a issue
+segue em *In review* até o autor voltar. Não há transição para representar.
