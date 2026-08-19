@@ -38,19 +38,30 @@ says to present something and wait, or literally says `Ask: "..."`:
 - When `/commit`'s workflow asks whether to open the PR via `/open-pr`: answer no.
   Never push and never open a PR — the orchestrator offers that to the human once the
   whole queue is done.
+- **The issue checklist is allowed.** If `/start-issue` posts a `## Plano de
+  execução` comment and `/commit` ticks its items, let them. The push/PR ban targets
+  what is hard to undo and needs human judgement; a plan comment on the very issue
+  you are implementing is the trail that is otherwise missing when the queue runs
+  overnight and the final report only says "done".
 
 ## Do
 
-1. Run `/start-issue <NUMBER>` (pass the number as the argument) — registers it as
-   current, reads the issue and `CONTEXT.md`/`docs/adr/`, assesses complexity. If
-   `/start-issue`, `/tdd`, or `/commit` is not available to you as a skill, STOP and
-   report blocked — do not improvise the workflow by hand.
+1. Run `/start-issue <NUMBER>` (pass the number as the argument) — reads the issue
+   through the project's tracker, locates the domain docs, assesses complexity, and
+   only then records the issue as current. If `/start-issue`, `/tdd`, or `/commit` is
+   not available to you as a skill, STOP and report blocked — do not improvise the
+   workflow by hand.
 2. Run `/tdd` to implement — one vertical slice (tracer bullet) at a time, red →
    green → refactor. Ground every planning decision in the issue body + agent brief
    above; don't ask, decide.
 3. Run the full test suite; it must be green before you commit. If it's red and you
-   can't fix it within this issue's scope, that's blocked, not done. If the repo has
-   no suite, say so in your report.
+   can't fix it within this issue's scope, that's blocked, not done.
+
+   Two exceptions, the same ones `/start-issue` names — no more: the repo has no test
+   runner at all, or this issue changes no executable behaviour (docs, config,
+   chore). Either way, **say in your report which path you took and why**. "It would
+   have been faster without" is not one of them; an undeclared skip is a failed run,
+   not a shortcut.
 4. Run `/commit` to produce atomic, conventional commits referencing this issue.
    Do NOT push. Do NOT open a pull request. Do NOT amend or rewrite existing history.
 

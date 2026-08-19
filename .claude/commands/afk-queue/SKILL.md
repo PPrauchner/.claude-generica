@@ -29,8 +29,19 @@ mode.
 This kicks off multiple unattended implementation runs — confirm once, up front,
 not per issue. Show the resolved queue (issue #, title), the execution mode
 (sequential by default — see [Parallel mode](#parallel-mode) below), the branch the
-batch will land on (see step 3), and that each issue ends in a **local commit only**
-(no push, no PR, nothing force/amended). Wait for a go-ahead.
+batch will land on (predict it from step 3's naming rule — the script is
+deterministic, so you can name it before running it), and that each issue ends in a
+**local commit only** (no push, no PR, nothing force/amended).
+
+Subagents do write to the issue tracker: `/start-issue` posts the `## Plano de
+execução` checklist for a complex issue and `/commit` ticks it. That is deliberate —
+it is the trail an unattended run would otherwise not leave. The ban is on push and
+PR, which are hard to undo and need human judgement.
+
+**Proposing parallel mode?** Add one question to this same confirmation: has worktree
+isolation already been validated in this repository? You cannot know that yourself,
+and the answer decides whether to start with a single issue (see
+[Parallel mode](#parallel-mode)). Wait for a go-ahead.
 
 ## 3. Put the batch on its own branch
 
@@ -107,9 +118,10 @@ Only when the user confirms the queued issues touch disjoint parts of the codeba
 its own branch and working copy. **Skip step 3 entirely** — the worktree branches are
 the isolation, and an `afk/` branch on top would never receive a commit. Each
 subagent's `/start-issue` is likewise a no-op there, since its worktree branch is
-already off the trunk. The brief pins every subagent to its own working
-tree; the first time you use this mode in a repo, run a single issue through it to
-confirm the worktree isolation holds before trusting a batch of N. When all finish,
+already off the trunk. The brief pins every subagent to its own working tree. If the user answered in
+step 2 that worktree isolation has not been validated in this repository yet, run a
+**single** issue through this mode first and report back before dispatching the rest
+— a batch of N failing the same way costs N times as much to untangle. When all finish,
 list the resulting branches/worktree paths instead of commit hashes — the user
 reviews and merges each independently.
 
