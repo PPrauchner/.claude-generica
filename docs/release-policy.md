@@ -85,5 +85,6 @@ Resumo de uma linha por release; as notas completas estão na aba *Releases*.
 | `v4.0.5` | `/start-issue` e `/afk-queue` criam a branch de trabalho ao partir de um tronco (`AUTO_BRANCH`). |
 | `v4.0.6` | `/start-issue` genérico: tracker via `docs/agents/`, plano vira checklist na issue, régua de complexidade verificável. |
 | `v4.0.7` | `/commit` e `/open-pr` genéricos: tracker via `docs/agents/`, checklist mantido no `/commit`, base real do PR. |
+| `v4.0.8` | `/review-pr` genérico: baseline via tracker/`domain.md`, branch restaurada por nome, briefs sem stack presumida. |
 
-**Próxima:** skill/comando novo → `v5.0.0`; alteração → `v4.0.8`.
+**Próxima:** skill/comando novo → `v5.0.0`; alteração → `v4.0.9`.
