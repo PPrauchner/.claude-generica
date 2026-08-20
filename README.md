@@ -84,7 +84,8 @@ projeto:
 - **não toca** no `rules/code-conventions.md` — é ali que mora o modelo de domínio
   que o projeto escreveu;
 - **acrescenta ao** `settings.json` só as chaves que faltam, mantendo os hooks
-  próprios do projeto (sem isso, features novas chegam desligadas);
+  próprios do projeto (sem isso os hooks novos nunca rodam — hook só existe se
+  estiver registrado ali; os toggles, esses, já valem `on` quando a chave falta);
 - pergunta **uma vez**, numa lista pré-marcada com o motivo de cada sugestão, sobre
   arquivos do projeto que sumiram da versão nova;
 - grava `.claude/.template.json` com a versão aplicada, para o próximo update saber
