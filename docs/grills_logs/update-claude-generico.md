@@ -115,6 +115,39 @@ exigem decisão do usuário.
 
 ---
 
+## Sessão — 2026-08-20 (respostas)
+
+**P:** O update apaga as seções `<preencher>` de `complexity-guide.md` e
+`atomicity-rules.md` (pergunta 1 abaixo). Terceiro papel, Semente parcial, ou tirar a
+calibragem de `commands/`?
+**R:** Tirar de `commands/` — a opção (c). A calibragem vira
+`.claude/rules/work-calibration.md`, Semente nova ("só instala se faltar"), com as
+seções *Quebra de trabalho* e *Camadas deste projeto*; os dois guias apontam para lá
+e voltam a ser 100% do template.
+
+Três razões, além de resolver o achado 8:
+
+1. `rules/` **já é** o lugar da calibragem de projeto — o `code-conventions.md` tem
+   exatamente esse padrão, e o `adopt-repo` já sabe preenchê-lo. Não é lugar novo.
+2. As rules são **carregadas em toda sessão**; `commands/*.md` só entram no contexto
+   quando o comando roda. "O que conta como camada aqui" e "quando esta issue é
+   grande demais" servem a quem escreve código, não só a quem digita `/commit` — e
+   servem inclusive a quem não usa `/start-issue`, `/commit` ou `/afk-queue`.
+3. A opção (a) exigia um papel novo no glossário **e** o update ler dentro do arquivo
+   para recortar uma seção. A (c) reusa a Semente, regra que já existe e já funciona.
+
+O custo que a opção (c) parecia ter — "quebra quem já preencheu no lugar antigo" — é
+zero na prática: as seções nasceram nas `v4.0.6`/`v4.0.7`, e nenhum Projeto adotado
+atualizou para elas ainda. A janela para mover sem quebrar ninguém fecha no primeiro
+`/update-claude` que alguém rodar.
+
+Aplicado também: `README.md` (lista de `rules/`), `adopt-repo` (artefato 3b e um item
+no grill do passo 4), e a linha **Semente** da tabela do `/update-claude`.
+
+**Pergunta 2 (origem: marcador ou URL fixa) segue em aberto.**
+
+---
+
 ## Perguntas em aberto
 
 ### 1. O update sobrescreve as seções `<preencher>` de `complexity-guide.md` e `atomicity-rules.md`
