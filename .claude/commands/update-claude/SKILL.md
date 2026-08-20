@@ -20,7 +20,8 @@ Quem manda em cada caminho — a regra é fixa e mora aqui, não em configuraç�
 | **Do template** | `skills/`, `commands/`, `hooks/`, `scripts/`, `rules/karpathy-principles.md`, `rules/python-conventions.md`, `settings.local.json.example`, `.gitignore` | sobrescreve |
 | **Semente** | `rules/code-conventions.md` | só instala se faltar |
 | **Extensão** | `settings.json` | acrescenta o que falta; nunca altera nem remove |
-| **Local** | `settings.local.json`, `current-issue`, `root-issue`, `board.env`, `worktrees/` | não toca |
+| **Marcador** | `.template.json` | reescrito no passo 6 |
+| **Local** | `settings.local.json`, `current-issue`, `board.env` — os três de `.claude/.gitignore` | não toca |
 | **Do projeto** | qualquer outro caminho | passo 5 |
 
 A **Semente** é intocável porque o projeto a *substitui*: o `code-conventions.md`
@@ -29,10 +30,15 @@ escrito numa sessão de grill. Sobrescrever apaga isso.
 
 O `settings.json` é diferente porque o projeto o *estende*: ninguém apagou nada
 do template, só acrescentou hooks em volta. Acrescentar chave que falta não
-destrói customização — e sem isso as features novas chegam desligadas
-(`BOARD_SYNC`, `PR_REVIEW_PARALLEL` e o hook do `grill-log` não existem nos
-projetos antigos, então o board sync e o review paralelo seriam instalados
-mortos).
+destrói customização — e sem isso os **hooks** novos chegam mortos: hook não tem
+default, ele só roda se estiver registrado no bloco `hooks` (é o caso do
+`grill-log`, ausente dos projetos antigos).
+
+Os toggles do bloco `env` são o caso contrário, e vale registrar porque a
+justificativa antiga dizia o oposto: `board-move.sh`, `ensure-branch.sh` e
+`grill-log.sh` leem `${CHAVE:-on}`, então **chave ausente já significa ligada**.
+Juntar o `env` serve para o usuário enxergar o que existe para desligar, não para
+ligar o que viria morto.
 
 ## Workflow
 
@@ -56,12 +62,13 @@ ls .claude/rules/karpathy-principles.md .claude/skills 2>/dev/null
 ### 2. Descobrir a versão vigente
 
 ```bash
-git ls-remote --tags --refs https://github.com/PPrauchner/ARK-Agent-Rules-Kit.git
+git ls-remote --tags --refs --sort=-v:refname https://github.com/PPrauchner/ARK-Agent-Rules-Kit.git
 ```
 
-A tag mais alta em ordem de versão é a vigente. A numeração é **odômetro, não
-semver** — comando/skill novo sobe o MAJOR, alteração sobe o PATCH, e o MINOR só
-existe como transbordo do PATCH (`v1.0.9` → `v1.1.0`).
+A primeira linha é a Versão vigente. O `--sort=-v:refname` não é enfeite: em ordem
+lexicográfica `v4.0.10` vem **antes** de `v4.0.9`, e a numeração daqui passa de 9 e
+continua contando. A régua que decide qual dígito sobe é meta do template e não
+viaja no `.claude/` — este comando não a interpreta, só ordena.
 
 Se a tag do marcador já é a vigente, diga isso e vá direto ao passo 8 — o aviso
 sobre as skills globais ainda pode valer.
@@ -80,9 +87,12 @@ identificador que não resolve para conteúdo nenhum.
 
 ### 3. Estabelecer a base
 
-- **Com marcador:** a base é a tag registrada nele. Dá para saber o que o template
-  mudou entre ela e a vigente. O marcador que veio junto na cópia crua do ARK tem
-  só `repo` e `tag` — o template não sabe o SHA da própria tag antes de cortá-la.
+- **Com marcador:** a base é a tag registrada nele, **se ela estiver na lista do
+  passo 2**. Se não estiver (marcador de outra linhagem, tag apagada), a base volta
+  a ser desconhecida: diferença medida contra uma base que não existe é a mesma
+  invenção que o parágrafo abaixo recusa. Havendo a tag, dá para saber o que o
+  template mudou entre ela e a vigente. O marcador que veio junto na cópia crua
+  do ARK tem só `repo` e `tag` — o template não sabe o SHA da própria tag antes de cortá-la.
   A `tag` basta para a base; o passo 6 grava o marcador completo.
 - **Sem marcador:** a base é **desconhecida**. Não infira.
 
@@ -143,7 +153,7 @@ sugestão é *manter*.
 ```json
 {
   "repo": "PPrauchner/ARK-Agent-Rules-Kit",
-  "tag": "v4.0.0",
+  "tag": "<a tag do passo 2>",
   "commit": "<saída do rev-parse do passo 2 — o commit, não o objeto tag>",
   "updated_at": "<AAAA-MM-DD>"
 }
@@ -156,19 +166,24 @@ update volta a ser cego.
 
 ```bash
 git ls-files .claude
-git rev-parse --abbrev-ref HEAD
-gh repo view --json defaultBranchRef --jq .defaultBranchRef.name
+git symbolic-ref --quiet --short HEAD                      # vazio = HEAD destacado
+git symbolic-ref --quiet --short refs/remotes/origin/HEAD  # tronco, sem rede
 ```
+
+**Tronco** aqui é o mesmo do `ensure-branch.sh`: `main`, `master`, `dev`, `develop`,
+`development`, ou a branch apontada por `origin/HEAD`. Nada de `gh` — atualizar o
+template não é operação de forge, e um projeto que rastreia issues fora do GitHub
+atualiza igual.
 
 - **Nenhum arquivo rastreado** (o projeto não versiona `.claude/`): escreva os
   arquivos e não commite nada. Fim.
-- **Há arquivos rastreados, na branch default:** `git add .claude` e um commit
+- **Há arquivos rastreados, no tronco:** `git add .claude` e um commit
   atômico só desses caminhos — funciona mesmo com o resto do repo sujo, sem
   encostar em trabalho em andamento.
 - **Há arquivos rastreados, numa branch de tópico:** **pare e pergunte.** Commitar
   aqui enfia a atualização do template dentro de um PR sobre outro assunto. Ofereça
   as três saídas — deixar sem commitar, commitar na branch atual mesmo, ou uma
-  branch nova a partir da default — e siga a escolha. **Não crie branch por conta
+  branch nova a partir do tronco — e siga a escolha. **Não crie branch por conta
   própria:** o `ensure-branch.sh` existe para separar *trabalho de issue* do tronco,
   e atualizar o template não é uma issue — não há número nem título para nomear a
   branch. Aqui a escolha continua sendo do usuário, como no `/open-pr`.
@@ -183,8 +198,8 @@ gh repo view --json defaultBranchRef --jq .defaultBranchRef.name
 chore(claude): atualiza template v1.0.0 -> v4.0.0
 
 - adiciona a skill adopt-repo e os comandos /open-pr e /update-claude
-- liga BOARD_SYNC e PR_REVIEW_PARALLEL no settings.json
-- remove o layout antigo commands/workflow/
+- registra o hook do grill-log no settings.json
+- remove commands/workflow/, órfão da linhagem pré-tag confirmado no passo 5
 - preserva rules/code-conventions.md e os hooks do projeto
 ```
 
@@ -193,6 +208,14 @@ chore(claude): atualiza template v1.0.0 -> v4.0.0
 Versão de origem → versão nova, o que entrou, o que foi atualizado, o que foi
 removido e **o que foi preservado por ser do projeto** — essa última linha é a que
 dá confiança para rodar o comando de novo.
+
+**Diga também o que a versão nova espera e o repositório não tem.** Vários comandos
+leem `docs/agents/`, que fica **fora do `.claude/`** e portanto fora do alcance deste
+update: sem `docs/agents/issue-tracker.md` o `/afk-queue` se recusa a rodar, e
+`/start-issue`, `/commit` e `/review-pr` caem no fallback GitHub com aviso. Se o
+arquivo não existir, registre no relatório e sugira a skill
+`setup-matt-pocock-skills` — não crie o arquivo aqui: instalar template é uma coisa,
+configurar tracker é outra.
 
 Confira também a cópia global:
 
