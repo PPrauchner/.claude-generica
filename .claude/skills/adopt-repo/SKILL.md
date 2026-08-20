@@ -30,6 +30,7 @@ que aquela decisão foi tomada.
 | 1 | `CLAUDE.md` | derivado do recon + 1 rodada de conferência |
 | 2 | `CONTEXT.md` | grill (glossário de domínio) |
 | 3 | "Restrições deste projeto" em `.claude/rules/code-conventions.md` | grill |
+| 3b | `.claude/rules/work-calibration.md` (quebra de trabalho, camadas) | grill |
 | 4 | `.claude/rules/<linguagem>-conventions.md` | derivado + confirmação |
 | 5 | `docs/agents/*` | delegado à skill `setup-matt-pocock-skills` |
 | 6 | `.claude/settings.local.json` | derivado de `settings.local.json.example` |
@@ -75,6 +76,11 @@ Foque o grill no que o código não entrega:
   não acaso, formato de persistência, exigência de reprodutibilidade, limite de
   ambiente. Escreva o resultado na seção "Restrições deste projeto" de
   `.claude/rules/code-conventions.md`, substituindo o `<preencher>`.
+- **Calibragem de trabalho:** o recon já mostrou a estrutura de pastas — pergunte
+  quantos módulos distintos costumam entrar numa mudança antes de ela virar grande
+  demais, e quais pastas o projeto trata como camadas. Escreva o resultado nas duas
+  seções de `.claude/rules/work-calibration.md`, substituindo os `<preencher>`.
+  Deixar vazio é resposta legítima: significa que valem os defaults genéricos.
 - **ADRs retroativos:** só ofereça quando a decisão for difícil de reverter,
   surpreendente sem contexto e fruto de trade-off real — os três critérios da
   `grill-with-docs`. Não documente retroativamente o que foi acaso.

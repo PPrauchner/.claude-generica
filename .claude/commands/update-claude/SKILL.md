@@ -18,15 +18,17 @@ Quem manda em cada caminho — a regra é fixa e mora aqui, não em configuraç�
 | Papel | Caminhos | O update faz |
 |---|---|---|
 | **Do template** | `skills/`, `commands/`, `hooks/`, `scripts/`, `rules/karpathy-principles.md`, `rules/python-conventions.md`, `settings.local.json.example`, `.gitignore` | sobrescreve |
-| **Semente** | `rules/code-conventions.md` | só instala se faltar |
+| **Semente** | `rules/code-conventions.md`, `rules/work-calibration.md` | só instala se faltar |
 | **Extensão** | `settings.json` | acrescenta o que falta; nunca altera nem remove |
 | **Marcador** | `.template.json` | reescrito no passo 6 |
 | **Local** | `settings.local.json`, `current-issue`, `board.env` — os três de `.claude/.gitignore` | não toca |
 | **Do projeto** | qualquer outro caminho | passo 5 |
 
-A **Semente** é intocável porque o projeto a *substitui*: o `code-conventions.md`
+As **Sementes** são intocáveis porque o projeto as *preenche*: o `code-conventions.md`
 do SAGA tem o modelo de domínio dele (aspectos, Join Point/Advice/Weaving),
-escrito numa sessão de grill. Sobrescrever apaga isso.
+escrito numa sessão de grill, e o `work-calibration.md` guarda os limiares de quebra
+de issue e as camadas de commit calibrados para aquele repositório. Sobrescrever
+apaga isso.
 
 O `settings.json` é diferente porque o projeto o *estende*: ninguém apagou nada
 do template, só acrescentou hooks em volta. Acrescentar chave que falta não

@@ -8,8 +8,10 @@ consegue verificar cada um lendo a issue e os arquivos. Estimativa de tempo não
 entra: o agente não tem como medir, e um critério que ele só pode chutar não torna
 a decisão reproduzível entre sessões.
 
-Os limiares são defaults. Aperte ou afrouxe na seção
-[Ajustes deste projeto](#ajustes-deste-projeto).
+Os limiares são defaults. Este projeto pode apertá-los ou afrouxá-los na seção
+**Quebra de trabalho** de [`rules/work-calibration.md`](../../rules/work-calibration.md)
+— leia-a antes de aplicar a régua abaixo. Seção vazia (ou arquivo ausente) significa:
+valem os defaults.
 
 ## NÃO quebrar (issue simples)
 
@@ -48,15 +50,3 @@ Cada sub-tarefa precisa de:
 - **Escopo** — o que exatamente será feito
 - **Referência** — ADR ou seção do `CONTEXT.md` relevante, se aplicável
 - **Dependências** — quais sub-tarefas devem ser concluídas antes
-
-## Ajustes deste projeto
-
-> Preencher na sessão de *grill with docs* deste projeto (skill `grill-with-docs`,
-> log em `docs/grills_logs/`). O que entra aqui: limiares diferentes ("neste repo,
-> dois módulos já bastam para quebrar"), unidades que o repo usa no lugar de
-> "módulo/diretório" (pacote, serviço, contexto), ou critérios próprios que a régua
-> genérica não captura.
->
-> Vazio significa: valem os defaults acima.
-
-<preencher>

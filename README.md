@@ -24,6 +24,9 @@ aqui e preserva o que o projeto customizou (ver
   - `python-conventions.md` — docstrings e type hints, só relevante para
     projetos Python. Para outras stacks, criar `<linguagem>-conventions.md`
     equivalente.
+  - `work-calibration.md` — como **este** projeto divide trabalho: limiares de
+    quebra de issue e o que conta como camada num commit. Também preenchido do
+    zero por cada projeto; lido pelo `/start-issue` e pelo `/commit`.
 - **`.claude/skills/`** — skills reutilizáveis, de `tdd` e `diagnose` a `grill-me`
   e `handoff` — lista completa em [`skills/README.md`](.claude/skills/README.md).
 - **`.claude/commands/`** — comandos de workflow encadeados num pipeline:
