@@ -8,8 +8,8 @@ description: Atualiza a pasta .claude/ deste repositório para a versão vigente
 Traz o `.claude/` **deste** repositório para a versão vigente do template
 `PPrauchner/ARK-Agent-Rules-Kit`, sem atropelar o que o projeto customizou.
 
-Não recebe argumentos: a origem vem do marcador `.claude/.template.json` e, na
-falta dele, da URL fixada neste arquivo.
+Não recebe argumentos: a origem vem do campo `repo` do marcador
+`.claude/.template.json` e, na falta dele, da URL fixada neste arquivo (passo 2).
 
 ## Propriedade dos arquivos
 
@@ -53,18 +53,38 @@ cat .claude/.template.json 2>/dev/null
 ls .claude/rules/karpathy-principles.md .claude/skills 2>/dev/null
 ```
 
-- **Estamos dentro do próprio ARK** (o `origin` é a origem): **pare.**
-  Aqui a pasta se edita, não se atualiza.
+- **Estamos dentro do próprio ARK** (o `origin` é a origem resolvida no passo 2 —
+  não a URL fixa, que pode não ser a origem deste projeto): **pare.** Aqui a pasta
+  se edita, não se atualiza.
 - **Não há `.claude/`, ou não há `rules/karpathy-principles.md` nem `skills/`:**
   não existe template instalado para atualizar — instalar 70 arquivos aqui é uma
   adoção, não uma atualização. Explique o que viu e ofereça `/adopt-repo` como
   **passo opcional**. Se o usuário recusar, siga normalmente: a instalação
   acontece do mesmo jeito e o relatório (passo 8) lista o que ficou por preencher.
 
-### 2. Descobrir a versão vigente
+### 2. Resolver a origem e descobrir a versão vigente
+
+A origem é o campo `repo` do marcador; a URL abaixo é o fallback de quem não tem
+marcador:
+
+```
+https://github.com/PPrauchner/ARK-Agent-Rules-Kit.git
+```
+
+- **Sem marcador, ou `repo` igual à URL fixa:** use a URL fixa e siga.
+- **`repo` diferente da URL fixa:** este `.claude/` veio de outro lugar — um fork,
+  um espelho privado. **Mostre as duas e pergunte de qual atualizar**, antes de
+  clonar. Clonar às cegas a URL fixa atualizaria o projeto para um template que não
+  é o dele; clonar às cegas o marcador executaria uma URL vinda de um arquivo do
+  repositório. Nenhuma das duas se faz calado.
+
+Esta é a **única** pergunta fora do passo 5, e só aparece quando as duas origens
+divergem — no caso normal o comando segue pedindo uma confirmação só.
+
+Com a origem resolvida (`<origem>` daqui para a frente):
 
 ```bash
-git ls-remote --tags --refs --sort=-v:refname https://github.com/PPrauchner/ARK-Agent-Rules-Kit.git
+git ls-remote --tags --refs --sort=-v:refname <origem>
 ```
 
 A primeira linha é a Versão vigente. O `--sort=-v:refname` não é enfeite: em ordem
@@ -78,7 +98,7 @@ sobre as skills globais ainda pode valer.
 Clone raso da tag numa pasta temporária e apague no fim:
 
 ```bash
-git clone --depth 1 --branch <tag> https://github.com/PPrauchner/ARK-Agent-Rules-Kit.git <tmp>
+git clone --depth 1 --branch <tag> <origem> <tmp>
 git -C <tmp> rev-parse HEAD
 ```
 
@@ -90,7 +110,8 @@ identificador que não resolve para conteúdo nenhum.
 ### 3. Estabelecer a base
 
 - **Com marcador:** a base é a tag registrada nele, **se ela estiver na lista do
-  passo 2**. Se não estiver (marcador de outra linhagem, tag apagada), a base volta
+  passo 2** — a lista da origem resolvida, que é a única contra a qual essa tag
+  significa alguma coisa. Se não estiver (marcador de outra linhagem, tag apagada), a base volta
   a ser desconhecida: diferença medida contra uma base que não existe é a mesma
   invenção que o parágrafo abaixo recusa. Havendo a tag, dá para saber o que o
   template mudou entre ela e a vigente. O marcador que veio junto na cópia crua
@@ -154,12 +175,16 @@ sugestão é *manter*.
 
 ```json
 {
-  "repo": "PPrauchner/ARK-Agent-Rules-Kit",
+  "repo": "<a origem resolvida no passo 2>",
   "tag": "<a tag do passo 2>",
   "commit": "<saída do rev-parse do passo 2 — o commit, não o objeto tag>",
   "updated_at": "<AAAA-MM-DD>"
 }
 ```
+
+O `repo` é a origem de onde **esta** atualização veio, não a URL fixa: quem atualiza
+de um fork continua atualizando do fork na próxima vez, sem ter que responder a
+pergunta do passo 2 de novo.
 
 Em `.claude/.template.json`, versionado junto com o resto — sem ele o próximo
 update volta a ser cego.

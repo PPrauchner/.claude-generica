@@ -144,7 +144,19 @@ atualizou para elas ainda. A janela para mover sem quebrar ninguém fecha no pri
 Aplicado também: `README.md` (lista de `rules/`), `adopt-repo` (artefato 3b e um item
 no grill do passo 4), e a linha **Semente** da tabela do `/update-claude`.
 
-**Pergunta 2 (origem: marcador ou URL fixa) segue em aberto.**
+**P:** A origem vem do campo `repo` do marcador ou da URL cravada no arquivo
+(pergunta 2 abaixo)?
+**R:** O marcador manda, com confirmação quando divergir — a opção (c). Sem marcador,
+ou com `repo` igual à URL fixa, nada muda e o comando segue pedindo uma confirmação
+só. Divergindo, ele mostra as duas e pergunta antes de clonar: clonar às cegas a URL
+fixa atualizaria o projeto para um template que não é o dele, e clonar às cegas o
+marcador executaria uma URL vinda de um arquivo do repositório. Nenhuma das duas se
+faz calado.
+
+Ajustados junto, porque dependiam da URL fixa: o passo 1 (a checagem "estamos dentro
+do próprio ARK" compara contra a origem resolvida), o passo 3 (a tag da base só
+significa algo contra a origem de onde veio) e o passo 6 (o marcador grava a origem
+resolvida, para quem atualiza de um fork não responder a pergunta toda vez).
 
 ---
 
